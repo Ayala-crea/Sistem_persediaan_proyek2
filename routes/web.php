@@ -59,8 +59,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('staff/all-Barang', 'index')->name('allbarang');
         Route::get('staff.add-Barang', 'addbarang')->name('addbarang');
         Route::post('tambah', 'simpan')->name('barangmasuk.tambah.simpan');
-        Route::get('hapus/{id}', 'hapusData')->name('baranghapus');
+        Route::get('tes/{id}', 'tes')->name('coba');
         Route::get('edit/{id}', 'edit')->name('barangmasuk.edit');
+        Route::post('update/{id}', 'update')->name('simpan.update');
+        Route::get('/search', 'search')->name('cariBarang');
     });
     Route::resource('staff/barang', BarangController::class)->except(['create', 'show']);
     Route::controller(PenjualanBarangController::class)->group(function () {

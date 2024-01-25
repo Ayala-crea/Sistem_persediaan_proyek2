@@ -12,12 +12,12 @@
         </li>
         <li>
             <a href="{{ route('allcategorybarang') }}" class="side-menu">
-                <div class="side-menu__title"> Data Penjualan Barang </div>
+                <div class="side-menu__title"> Data Barang Keluar </div>
             </a>
         </li>
         <li>
-            <a href="" class="side-menu">
-                <div class="side-menu__title"> Penjadwalan barang </div>
+            <a href="{{ route('jadwal') }}" class="side-menu">
+                <div class="side-menu__title"> Pengiriman barang </div>
             </a>
         </li>
         <li>

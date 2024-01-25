@@ -28,7 +28,8 @@ class BarangController extends Controller
     {
         $data = ModeSupplier::get();
     }
-    public function simpan(Request $request){
+    public function simpan(Request $request)
+    {
         $DataBarang = [
             'nama_barang' => $request->nama_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
@@ -41,7 +42,8 @@ class BarangController extends Controller
         ModeBarang::create($DataBarang);
         return redirect()->route('allbarang');
     }
-    public function ApiSimpan(Request $request){
+    public function ApiSimpan(Request $request)
+    {
         $ApiBarang = [
             'nama_barang' => $request->nama_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
@@ -53,28 +55,61 @@ class BarangController extends Controller
 
         ModeBarang::create($ApiBarang);
     }
-    public function hapusData($id){
-        ModeBarang::findOrFail($id)->delete();
-        return redirect()->route('allbarang');
+    public function tes($id)
+    {
+        $produk = ModeBarang::find($id);
+        if ($produk) {
+            $produk->delete();
+            return redirect()->route('allbarang')->with('success', 'Produk berhasil dihapus!');
+        } else {
+            return redirect()->route('allbarang')->with('error', 'Produk tidak ditemukan!');
+        }
     }
-    public function delete($id){
-        ModeBarang::find($id)->delete();
-        return redirect()->route('allbarang');
-    }    
-    public function edit($id){
+    public function edit($id)
+    {
         $EditBarang = ModeBarang::find($id);
-        return view('staff.barang.form');
+        $namaSupplier = ModeSupplier::pluck('nama_supplier');
+        return view('staff.barang.form', compact('EditBarang', 'namaSupplier'));
     }
-    public function update($id, Request $request){
-        $DataBarang = [
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            'nama_barang' => 'required|string',
+            'deskripsi_barang' => 'required|string',
+            'harga' => 'required|numeric',
+            'jumlah_stok' => 'required|integer',
+            'berat' => 'required|numeric',
+            'suppliers' => 'required|string'
+        ]);
+
+        $barang = ModeBarang::find($id);
+
+        if (!$barang) {
+            return redirect()->route('barang')->with('error', 'Barang tidak ditemukan!');
+        }
+
+        $barang->update([
             'nama_barang' => $request->nama_barang,
             'deskripsi_barang' => $request->deskripsi_barang,
             'harga' => $request->harga,
             'jumlah_stok' => $request->jumlah_stok,
             'berat' => $request->berat,
             'suppliers' => $request->suppliers
-        ];
-        ModeBarang::find($id)->update($DataBarang);
-        return redirect()-> route('barang');
+        ]);
+
+        return redirect()->route('allbarang')->with('success', 'Barang berhasil diupdate!');
+    }
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $supplier = ModeSupplier::find(1);
+        $barangs = $supplier->barangs;
+
+        $modeBarangs = ModeBarang::where('nama_barang', 'LIKE', "%$search%")
+            ->orWhere('deskripsi_barang', 'LIKE', "%$search%")
+            ->orWhere('suppliers', 'LIKE', "%$search%")
+            ->get();
+
+        return view('staff.barang.index', compact('modeBarangs', 'search', 'barangs', 'supplier'));
     }
 }
