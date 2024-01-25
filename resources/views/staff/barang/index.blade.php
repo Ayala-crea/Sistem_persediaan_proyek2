@@ -32,8 +32,10 @@
                 <div class="hidden md:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div>
                 <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
                     <div class="w-56 relative text-slate-500">
-                        <input type="text" class="form-control w-56 box pr-10" placeholder="Search...">
-                        <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i>
+                        <form action="{{ route('cariBarang') }}" method="GET">
+                            <input name="search" type="text" class="form-control w-56 box pr-10" placeholder="Search...">
+                            <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"><button type="submit">Search</button></i>    
+                        </form>
                     </div>
                 </div>
             </div>
@@ -55,7 +57,8 @@
                                 <tbody>
                                     @foreach ($barangs as $barang)
                                         <tr class="intro-x">
-                                            <td class="text-center"><img class="w-12" src="{{ asset($barang->foto) }}" alt=""></td>
+                                            <td class="text-center"><img class="w-12" src="{{ asset($barang->foto) }}"
+                                                    alt=""></td>
                                             <td>
                                                 <a href=""
                                                     class="font-medium whitespace-nowrap">{{ $barang->nama_barang }}</a>
@@ -66,12 +69,11 @@
                                             </td>
                                             <td class="table-report__action w-56">
                                                 <div class="flex justify-center items-center">
-                                                    <a class="flex items-center mr-3" href="{{ route('barangmasuk.edit', $barang->id) }}"> <i
+                                                    <a class="flex items-center mr-3"
+                                                        href="{{ route('barangmasuk.edit', $barang->id) }}"> <i
                                                             data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
                                                     </a>
-                                                    <a class="flex items-center text-danger" href=""
-                                                        data-tw-toggle="modal"
-                                                        data-tw-target="#delete-confirmation-modal"> <i
+                                                    <a class="flex items-center text-danger" href="{{ route('coba', $barang->id) }}"> <i
                                                             data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete </a>
                                                 </div>
                                             </td>

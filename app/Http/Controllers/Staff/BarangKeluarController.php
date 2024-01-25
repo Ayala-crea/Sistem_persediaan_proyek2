@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class BarangKeluarController extends Controller
 {
-
+    public function index()
+    {
+        
+    }
 }
